@@ -6,10 +6,10 @@ votingData = {}
 votingMap = {}
 partyResults = ->
   templates = parseTemplates(["tooltip","detail"])
-  daten = votingData["2014"]["districts"]
+  daten = votingData["2015"]["districts"]
   data = geoData["districts"]
   daten.map (d) ->
-    parties = ["spd","cdu","die_linke","gruene","piraten","fdp","oedp","uwg_ms"].map((partyName) -> makeParty(d,partyName))
+    parties = ['Lewe, Markus (CDU)','K\u00F6hnke, Jochen (SPD)','Klein-Schmeink, Maria (B&#180;90/Die GR\u00DCNEN)','G\u00F6tting, Heinrich (FDP)','Seemann, Harry (Einzelbewerber)',"W\u00E4hler/<BR>innen","Wahlbe-<BR>rechtigte"].map((partyName) -> makeParty(d,partyName))
     d.winner = _.max(parties, (d) -> d.votes; ).party
     d.partyPercentages = parties
     d.winning_percentage = d[d.winner] / d.waehler_insgesamt
@@ -37,7 +37,7 @@ partyResults = ->
 
 districtResults = ->
   templates = parseTemplates(["tooltip","detail"]) unless templates
-  daten = votingData["2014"]["districts"]
+  daten = votingData["2015"]["districts"]
   data = geoData["districts"]
   options = {
     width: $('#vote-map').width()
@@ -60,17 +60,17 @@ districtResults = ->
   votingMap.render("vote-map")
 
 subDistrictData = ->
-  voteData = new Votes2014(votingData["2014"]["erg"], [], votingData["2014"]["beznamen"])
-  voteData.setResultsPerDistrict(votingData["2014"]["resultsPerDistrict"])
+  voteData = new Votes2015(votingData["2015"]["erg"], [], votingData["2015"]["beznamen"])
+  voteData.setResultsPerDistrict(votingData["2015"]["resultsPerDistrict"])
   voteData.formatForSubDistricts()
-  votingData["2014"]["districts"] = voteData.data
+  votingData["2015"]["districts"] = voteData.data
   voteData.data
 
 districtData = ->
-  voteData = new Votes2014(votingData["2014"]["erg"], votingData["2014"]["raw"], votingData["2014"]["beznamen"])
-  voteData.setResultsPerDistrict(votingData["2014"]["resultsPerDistrict"])
+  voteData = new Votes2015(votingData["2015"]["erg"], votingData["2015"]["raw"], votingData["2015"]["beznamen"])
+  voteData.setResultsPerDistrict(votingData["2015"]["resultsPerDistrict"])
   voteData.formatForDistricts()
-  votingData["2014"]["districts"] = voteData.data
+  votingData["2015"]["districts"] = voteData.data
   voteData.data
 
 updateVoteMapForSubDistricts = ->
@@ -94,23 +94,21 @@ init = ->
     geoData["districts"] = data
     d3.json "stimmbezirke.geojson", (err, data) ->
       geoData["subDistricts"] = data
-      d3.csv "results.csv", (err, daten) ->
-        votingData["2009"] = daten
-        votingData["2014"] = {}
-        jQuery.ajax({
-          url: "http://pollfinder-codeformuenster.rhcloud.com/live-results",
-          dataType: "script",
-          success: (data, ts,jq) ->
-            d3.json("wahlbezirke.json", (err, data) ->
-              votingData["2014"]["raw"] = data
-              votingData["2014"]["erg"] = erg
-              votingData["2014"]["beznamen"] = beznamen
-              votingData["2014"]["resultsPerDistrict"] = pnamen.length
-              districtData()
-              districtResults()
-            )
-          }
-        )
+      votingData["2015"] = {}
+      jQuery.ajax({
+        url: "http://crossorigin.me/http://www.stadt-muenster.de/ms/wahlen/ergebnis/app/bw2015.js",
+        dataType: "script",
+        success: (data, ts,jq) ->
+          d3.json("wahlbezirke.json", (err, data) ->
+            votingData["2015"]["raw"] = data
+            votingData["2015"]["erg"] = erg
+            votingData["2015"]["beznamen"] = beznamen
+            votingData["2015"]["resultsPerDistrict"] = pnamen.length
+            districtData()
+            districtResults()
+          )
+        }
+      )
 $ ->
   templates = parseTemplates(["tooltip","detail"])
   init()

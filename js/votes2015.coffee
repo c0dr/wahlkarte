@@ -1,6 +1,6 @@
 ---
 ---
-class @Votes2014
+class @Votes2015
   constructor: (@rawData, @data, @districtNames) ->
 
   setDistrictNames: (districtNames) ->
@@ -34,11 +34,11 @@ class @Votes2014
 
   districtNumberForName: (name) ->
     bezirkArr = name.match(/^[0-9]{2}/)
-    if(bezirkArr && bezirkArr.length > 0) 
+    if(bezirkArr && bezirkArr.length > 0)
       bezirkArr[0]
     else
       briefArr = name.match(/^[B][0-9]{3}/)
-      if(briefArr && briefArr.length > 0) 
+      if(briefArr && briefArr.length > 0)
         bezNr = name.split(" ")[0]
         bezirkArr = bezNr.match(/B9([0-9]{2})/)
         if(bezirkArr && bezirkArr.length > 0)
@@ -69,7 +69,7 @@ class @Votes2014
       districtResults.winning_percentage = winningParty.votes / waehler
 
   formatRawResults: (wahlResults) ->
-    partyNames = ["cdu","spd","gruene","fdp","die_linke","uwg_ms","piraten","oedp","harryismus","afd"];
+    partyNames = ['Lewe, Markus (CDU)','K\u00F6hnke, Jochen (SPD)','Klein-Schmeink, Maria (B&#180;90/Die GR\u00DCNEN)','G\u00F6tting, Heinrich (FDP)','Seemann, Harry (Einzelbewerber)',"W\u00E4hler/<BR>innen","Wahlbe-<BR>rechtigte"];
     parties = for i in [0...partyNames.length]
       waehler = wahlResults[wahlResults.length-2]
       votes = wahlResults[i]

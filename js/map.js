@@ -2,13 +2,20 @@ var wahldaten;
 var width = 960,
 height = 650;
 
-partyNames = { "spd": "SPD", "cdu": "CDU", "die_linke": "Die Linke", "gruene": "Grüne", "piraten": "Piraten", "fdp": "FDP", "oedp": "ÖDP", "uwg_ms": "UWG Ms", "harryismus": "Harryismus", "afd": "AfD" }
+partyNames = {
+  "Lewe, Markus (CDU)": "Markus Lewe (CDU)",
+  "K\u00F6hnke, Jochen (SPD)": "Jochen K\u00F6hnke (SPD)",
+  "Klein-Schmeink, Maria (B&#180;90/Die GR\u00DCNEN)": "Maria Klein-Schmeink (B&#180;90/Die GR\u00DCNEN)",
+  "G\u00F6tting, Heinrich (FDP)": "Heinrich G\u00F6tting (FDP)",
+  "Seemann, Harry (Einzelbewerber)": "Harry Seemann (Einzelbewerber)"
+}
+
 function partyName(accronym) {
   return partyNames[accronym];
 }
 function makeParty(d,partyName) {
-  return  { 
-    party: partyName, 
+  return  {
+    party: partyName,
     votes: parseInt(d[partyName]) || 0,
     percentage: (parseInt(d[partyName]) * 100 / parseInt(d.waehler_insgesamt) ) || 0
   };
@@ -20,8 +27,8 @@ function getWinner(parties) {
   return getWinningParty(parties).party;
 }
 function addData() {
-  wahldaten.map(function(d) { 
-    parties = ["spd","cdu","die_linke","gruene","piraten","fdp","oedp","uwg_ms"].map(function(partyName) { return makeParty(d,partyName) });
+  wahldaten.map(function(d) {
+    parties = ['Lewe, Markus (CDU)','K\u00F6hnke, Jochen (SPD)','Klein-Schmeink, Maria (B&#180;90/Die GR\u00DCNEN)','G\u00F6tting, Heinrich (FDP)','Seemann, Harry (Einzelbewerber)',"W\u00E4hler/<BR>innen","Wahlbe-<BR>rechtigte"].map(function(partyName) { return makeParty(d,partyName) });
     d.winner = getWinner(parties);
     d.partyPercentages = parties;
     d.winning_percentage = (d[d.winner] / d.waehler_insgesamt);

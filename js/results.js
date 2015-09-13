@@ -33,7 +33,7 @@ function resultsForBezirk(wahlbezirk, resultBegin) {
   }
 }
 function formatResults(wahlResults) {
-  var partyNames = ["cdu","spd","gruene","fdp","die_linke","uwg_ms","piraten","oedp","harryismus","afd"];
+  var partyNames = ['Lewe, Markus (CDU)','K\u00F6hnke, Jochen (SPD)','Klein-Schmeink, Maria (B&#180;90/Die GR\u00DCNEN)','G\u00F6tting, Heinrich (FDP)','Seemann, Harry (Einzelbewerber)'];
   var parties = [];
   for(var i=0;i<partyNames.length;i++) {
     var waehler = wahlResults[wahlResults.length-2];
@@ -55,7 +55,7 @@ function appendDataToWahlbezirke() {
 function parseLiveResults() {
   resultBegin = 0;
   jQuery.ajax({
-    url: "http://pollfinder-codeformuenster.rhcloud.com/live-results", 
+    url: "http://crossorigin.me/http://www.stadt-muenster.de/ms/wahlen/ergebnis/app/bw2015.js",
     dataType: "script",
     success: function(data, ts,jq) {
       bezirke = beznamen;
