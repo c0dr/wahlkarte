@@ -101,12 +101,14 @@ function mapResults() {
 
 
     svg = d3.select("#map svg");
-    svg.selectAll("path")
+    wb = svg.selectAll("path")
     .data(data.features)
-    .enter()
+
+    wb.enter()
     .append("path")
     .attr("d",path)
-    .attr("class", winner)
+
+    wb.attr("class", winner)
     .attr("opacity", percentageOpacity)
     .on("mouseover", highlight)
     .on("mouseout", unhighlight)
@@ -114,23 +116,3 @@ function mapResults() {
     .on("click",addDetailData);
   });
 }
-jQuery(function() {
-  svg = d3.select("#map").append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .call(d3.behavior.zoom()
-  .on("zoom", redraw))
-  .append("g");
-
-  function redraw() {
-    svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-  }
-  if(jQuery("#live-results").length > 0) {
-    parseLiveResults();
-    setInterval("parseLiveResults();", 5000);
-  }
-  if(jQuery("#wahl-2009").length > 0) {
-    wahl2009();
-  }
-
-});
